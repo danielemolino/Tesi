@@ -10,34 +10,34 @@ from sacrebleu.metrics import BLEU
 
 """
 # Carichiamo i report generati
-a = pd.read_csv('generated_report_0.csv')
-b = pd.read_csv('generated_report_10.csv')
-c = pd.read_csv('generated_report_20.csv')
-d = pd.read_csv('generated_report_30.csv')
-e = pd.read_csv('generated_report_40.csv')
-f = pd.read_csv('generated_report_50.csv')
-g = pd.read_csv('generated_report_60.csv')
-h = pd.read_csv('generated_report_70.csv')
-i = pd.read_csv('generated_report_80.csv')
-j = pd.read_csv('generated_report_90.csv')
-k = pd.read_csv('generated_report_99.csv')
+a = pd.read_csv('scale_generated_report_0.csv')
+b = pd.read_csv('scale_generated_report_10.csv')
+c = pd.read_csv('scale_generated_report_20.csv')
+d = pd.read_csv('scale_generated_report_30.csv')
+e = pd.read_csv('scale_generated_report_40.csv')
+f = pd.read_csv('scale_generated_report_50.csv')
+g = pd.read_csv('scale_generated_report_60.csv')
+h = pd.read_csv('scale_generated_report_70.csv')
+i = pd.read_csv('scale_generated_report_80.csv')
+j = pd.read_csv('scale_generated_report_90.csv')
+k = pd.read_csv('scale_generated_report_99.csv')
 
 # Creiamo un dataframe vuoto con colonne Real, 0, 10, 20, 30, 40, 50, 60, 70
-generated_report = pd.DataFrame(columns=['Real', '0', '10', '20', '30', '40', '50', '60', '70'])
-generated_report['Real'] = a['Real']
-generated_report['0'] = a['0']
+generated_report = pd.DataFrame(columns=['Real', '0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '99'])
+generated_report['Real'] = b['Real']
+generated_report['0'] = a['numbers']
 generated_report['10'] = b['numbers']
-generated_report['20'] = c['20']
+generated_report['20'] = c['numbers']
 generated_report['30'] = d['numbers']
 generated_report['40'] = e['numbers']
 generated_report['50'] = f['numbers']
-generated_report['60'] = g['60']
+generated_report['60'] = g['numbers']
 generated_report['70'] = h['numbers']
 generated_report['80'] = i['numbers']
 generated_report['90'] = j['numbers']
 generated_report['99'] = k['numbers']
 
-generated_report.to_csv('generated_report.csv', index=False)
+generated_report.to_csv('scale_generated_report.csv', index=False)
 """
 views = pd.read_csv('test_short_clean.csv')['ViewPosition']
 generated_report = pd.read_csv('generated_report.csv')

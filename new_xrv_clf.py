@@ -14,21 +14,29 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load model and process image
 model = xrv.models.DenseNet(weights="densenet121-res224-all")
-
 model = model.to(device)
 
 transforms = torchvision.transforms.Compose([xrv.datasets.XRayCenterCrop(), xrv.datasets.XRayResizer(224)])
 data_aug = None
-
+# usando il dicom_id, teniamo tutte le labels necessarie
 test_options = {'codi': ("/256", '_codi', 'tiff'), 'test': ("../TestSet_Mimic", '', 'jpg')}
 to_test = 'codi'
 
 dataset = xrv.datasets.MIMIC_Dataset(
     imgpath=test_options[to_test][0],
-    csvpath=f"labels_test{test_options[to_test][1]}.csv",
-    metacsvpath=f"metadata_test{test_options[to_test][1]}.csv",
-    transform=transforms, data_aug=data_aug, unique_patients=False, views=["PA", "AP"], dtype=test_options[to_test][2])
+    csvpath=f"labels.csv",
+    metacsvpath=f"metadata_full_test.csv",
+    transform=transforms, data_aug=data_aug, unique_patients=False, views=["LL", "AP", "LATERAL", "PA"], dtype=test_options[to_test][2])
 # Eliminiamo da dataset.pathologies le colonne che non ci interessano, cioè Pleural Other, Fracture e Support Devices
+labels = dataset.csv
+# teniamo solo le colonne che ci interessano, cioè dalla 1 alla 15
+labels = labels.iloc[:, 1:16]
+all_labels = pd.DataFrame(labels, columns=dataset.pathologies)
+# Salviamole
+labels.to_csv('labels_full_test.csv', index=0)
+
+# ricarichiamole
+all_labels = pd.read_csv('labels_full_test.csv')
 
 dl = torch.utils.data.DataLoader(dataset, batch_size=64, shuffle=False)
 # Creiamo un dict che collega l'ordine delle colonne di results con l'ordine dell'output del modello
